@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <taglib/tag.h>
+#include <taglib/fileref.h>
 #include <filesystem>
 namespace fs = std::filesystem;
 struct Song

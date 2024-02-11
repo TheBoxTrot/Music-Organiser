@@ -3,6 +3,7 @@
 #include <sstream>
 #include <taglib/tpropertymap.h>
 #include "FileHandler.h"
+#include "Song.h"
 std::vector<Song> importMusic(std::vector<fs::path> songpaths, std::string destinationFolderPath)
 {
     {
