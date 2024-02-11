@@ -143,10 +143,12 @@
   <ItemGroup>
     <ClCompile Include="FileHandler.cpp" />
     <ClCompile Include="musicorg.cpp" />
+    <ClCompile Include="SongOperations.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FileHandler.h" />
     <ClInclude Include="Song.h" />
+    <ClInclude Include="SongOperations.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
