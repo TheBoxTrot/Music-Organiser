@@ -141,11 +141,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ConfigReader.cpp" />
     <ClCompile Include="FileHandler.cpp" />
     <ClCompile Include="musicorg.cpp" />
     <ClCompile Include="SongOperations.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Config.h" />
+    <ClInclude Include="ConfigReader.h" />
     <ClInclude Include="FileHandler.h" />
     <ClInclude Include="Song.h" />
     <ClInclude Include="SongOperations.h" />

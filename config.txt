@@ -1,0 +1,3 @@
+FileTypes = .mp3,.flac
+customlocation = false
+Dir layout = `ALBUMARTIST`\`ALBUM` (`YEAR`)\

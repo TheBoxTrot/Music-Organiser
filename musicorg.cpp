@@ -10,135 +10,79 @@
 #include <string>
 #include "FileHandler.h"
 #include <sstream>
-
+#include "ConfigReader.h"
 
 
 
 
 
  // Set of desired file extensions
-std::set<std::string> fileExtensions = { ".flac", ".mp3", ".mp4" };
-void removeExtent()
+std::set<std::string> fileExtensions;
+
+void seperateExtensions(std::string extensions, std::set<std::string>& fileExtensions)
 {
-
-    std::string ss;
-    std::cout << "removing:\n";
-    std::cin >> ss;
-    fileExtensions.erase(ss);
-
+	std::stringstream ss(extensions);
+	std::string token;
+	while (std::getline(ss, token, ','))
+	{
+		fileExtensions.insert(token);
+	}
 }
-void AddExtent()
-{
-    
-    std::string ss;
-    std::cout << "adding:\n";
-    std::cin >> ss;
-	fileExtensions.insert(ss);
- 
-}
-void fileExtensionsSettings()
-{
-    
-	int choice;
-    bool loop = true;
-    std::set<std::string>::iterator itr;
-    while (loop == true)
-    {
-        std::cout << "What Files do you want searched (include the .)\n";
-        std::cout << "Currnet Files:";
-        for (itr = fileExtensions.begin();
-            itr != fileExtensions.end(); itr++)
-        {
-            std::cout << *itr << ",";
-        }
-        std::cout << "what would you like to adjust\n";
-        std::cout << "1. Enter New Extension\n";
-        std::cout << "2. Remove Extension\n";
-        std::cout << "3. Enter 0 to exit\n";
-        std::cin >> choice;
-        switch (choice)
-        {
-        case 1:
-            AddExtent();
-            break;
-        case 2:
-            removeExtent();
-            break;
-        case 3:
-            loop = false;
-            break;
-        default:
-            break;
-        }
-    }
-
-
-
-   
-}
-
 
 int main()
 {
-    bool loop = true;
-    int choice;
-    std::cout << "Welcome\n1.Start\n2.Extention settings\n"<<std::endl;
-    std::cin >> choice;
-    switch (choice)
-    {
-    case 1:
-        loop = false;
-        break;
-    case 2:
-        fileExtensionsSettings();
-        break;
-    default:
-        break;
-    }
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+
+	if (!doesConfigExist())
+	{
+		createDefaultConfig();
+	}
+	//std::cout << "asda" << std::endl;
+	std::map<std::string, std::string> config = ReadConfig();
+	seperateExtensions(config["FileTypes"], fileExtensions);
 
 	std::vector<fs::path> songpaths;
-    
-    std::string sourceFolderPath;
-    std::string destinationFolderPath;
-    try {
-   
 
-        std::cout << "Enter the source folder path: ";
-        std::getline(std::cin, sourceFolderPath);
+	std::string sourceFolderPath;
+	std::string destinationFolderPath;
+	try {
 
-        std::cout << "Enter the destination folder path: ";
-        std::getline(std::cin, destinationFolderPath);
 
-        fs::path sourceDir(sourceFolderPath);
-        fs::path destinationDir(destinationFolderPath);
+		std::cout << "Enter the source folder path: ";
+		std::getline(std::cin, sourceFolderPath);
 
-        if (!fs::exists(sourceDir) || !fs::is_directory(sourceDir) ||
-            !fs::exists(destinationDir) || !fs::is_directory(destinationDir)) {
-            std::cerr << "Invalid source or destination folder." << std::endl;
-            return 1;
-        }
+		std::cout << "Enter the destination folder path: ";
+		std::getline(std::cin, destinationFolderPath);
 
-       
+		fs::path sourceDir(sourceFolderPath);
+		fs::path destinationDir(destinationFolderPath);
 
-        songpaths= findFiles(sourceDir, fileExtensions);
-    }
-    catch (const std::exception& e) {
-        std::cerr << "Error: " << e.what() << std::endl;
-        return 1;
-    }
- 
-	
-    std::vector<Song> songs = importMusic(songpaths,destinationFolderPath);
-  AttemptMove(songs);
-
-    ///convert to .sound
-    
+		if (!fs::exists(sourceDir) || !fs::is_directory(sourceDir) ||
+			!fs::exists(destinationDir) || !fs::is_directory(destinationDir)) {
+			std::cerr << "Invalid source or destination folder." << std::endl;
+			return 1;
+		}
 
 
 
+		songpaths = findFiles(sourceDir, fileExtensions);
+	}
+	catch (const std::exception& e) {
+		std::cerr << "Error: " << e.what() << std::endl;
+		return 1;
+	}
 
-    // Get the tag of the file
+
+	std::vector<Song> songs = importMusic(songpaths, destinationFolderPath, config["Dir layout"]);
+	AttemptMove(songs);
+
+	///convert to .sound
+
+
+
+
+
+	// Get the tag of the file
 
 }
 

@@ -1,0 +1,1 @@
+FileTypes = .mp3,.flacCopyinstead of move = falseDir layout = $ALBUMARTIST/$ALBUM ($YEAR)/
